@@ -1,0 +1,27 @@
+---
+- name: Create my project
+  hosts: localhost
+  gather_facts: False
+
+  vars_files:
+  - vault.yml
+  - vars.yml
+
+  collections:
+  - ansible.controller
+
+  tasks:
+  - name: Making sure the project exists
+    ansible.controller.project:
+      controller_host: "{{ aap2_host }}"
+      controller_username: "{{ aap2_username }}"
+      controller_password: "{{ aap2_password }}"
+      validate_certs: False
+      name: "{{ customer }} project"
+      description: "{{ customer }} project"
+      organization: "{{ customer }} org"
+      scm_type: git
+      scm_update_on_launch: True
+      scm_update_cache_timeout: 60
+      scm_url: https://github.com/RedHatBelux/ansible_example.git
+      state: present
